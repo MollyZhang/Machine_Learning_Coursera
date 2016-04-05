@@ -62,24 +62,17 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% get h values (5000 x 10 matrix)
+h1 = sigmoid([ones(m, 1) X] * Theta1');
+h2 = sigmoid([ones(m, 1) h1] * Theta2');
 
+% convert y into a 5000 x 10 matrix by one-hot-endcoding
+y_matrix = one_hot_encode(y, num_labels);
+result_matrix = y_matrix .* log(h2) + (1-y_matrix) .* log(1-h2);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% calculate regularization term
+reg = lambda/(2*m) * (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)));
+J = -sum(sum(result_matrix, 2))/m + reg;
 % -------------------------------------------------------------
 
 % =========================================================================

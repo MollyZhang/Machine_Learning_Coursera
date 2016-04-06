@@ -153,46 +153,63 @@ fprintf('Program paused. Press enter to continue.\n');
 pause;
 
 
-%% =================== Part 8: Training NN ===================
+%% =================== Part 8: Training NN with 8:2 train test split ===================
 %  You have now implemented all the code necessary to train a neural 
 %  network. To train your neural network, we will now use "fmincg", which
 %  is a function which works similarly to "fminunc". Recall that these
 %  advanced optimizers are able to train our cost functions efficiently as
 %  long as we provide them with the gradient computations.
 %
+
+sel = randperm(size(X, 1));
+X_train = X(sel(1:4000), :);
+X_test = X(sel(4001:end), :);
+y_train = y(sel(1:4000), :);
+y_test = y(sel(4001:end), :);
+
 fprintf('\nTraining Neural Network... \n')
 
 %  After you have completed the assignment, change the MaxIter to a larger
 %  value to see how more training helps.
-iteration = 200;
-options = optimset('MaxIter', iteration);
-
 %lambdas = logspace(log10(0.01), log10(3), 5);
-lambdas = [0.04]
+lambdas = [1];
+iterations = 20:10:120;
 legends = {};
 for lambda = lambdas
-    % Create "short hand" for the cost function to be minimized
-    costFunction = @(p) nnCostFunction(p, ...
-                                       input_layer_size, ...
-                                       hidden_layer_size, ...
-                                       num_labels, X, y, lambda);
+    train_accu = [];
+    test_accu = [];
+    for iteration = iterations
+        options = optimset('MaxIter', iteration);
 
-    % Now, costFunction is a function that takes in only one argument (the
-    % neural network parameters)
-    [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
-    % Obtain Theta1 and Theta2 back from nn_params
-    Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
-                     hidden_layer_size, (input_layer_size + 1));
+        % Create "short hand" for the cost function to be minimized
+        costFunction = @(p) nnCostFunction(p, ...
+                                           input_layer_size, ...
+                                           hidden_layer_size, ...
+                                           num_labels, X_train, y_train, lambda);
 
-    Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
-                     num_labels, (hidden_layer_size + 1));
-    
-    plot(cost);
+        % Now, costFunction is a function that takes in only one argument (the
+        % neural network parameters)
+        [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
+        % Obtain Theta1 and Theta2 back from nn_params
+        Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
+                         hidden_layer_size, (input_layer_size + 1));
+
+        Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
+                         num_labels, (hidden_layer_size + 1));
+
+        %plot(cost);hold on;
+        pred_test = predict(Theta1, Theta2, X_test);
+        pred_train = predict(Theta1, Theta2, X_train);
+        train_accu = [train_accu mean(double(pred_train == y_train)) * 100];
+        test_accu = [test_accu mean(double(pred_test == y_test)) * 100];
+        legends = [legends {num2str(lambda)}];
+    end
+    plot(iterations, train_accu, iterations, test_accu);
     hold on;
-    legends = [legends {num2str(lambda)}];
+    legends = {'train', 'test'};
 end
-xlabel('iterations');
-ylabel('Cost');
+xlabel('max iterations');
+ylabel('accuracy');
 
 legend(legends);
 
@@ -219,8 +236,10 @@ pause;
 %  neural network to predict the labels of the training set. This lets
 %  you compute the training set accuracy.
 
-pred = predict(Theta1, Theta2, X);
+pred_test = predict(Theta1, Theta2, X_test);
+pred_train = predict(Theta1, Theta2, X_train);
+fprintf('\n Training Set Accuracy: %f\n', mean(double(pred_train == y_train)) * 100);
+fprintf('\n Testing Set Accuracy: %f\n', mean(double(pred_test == y_test)) * 100);
 
-fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == y)) * 100);
 
 

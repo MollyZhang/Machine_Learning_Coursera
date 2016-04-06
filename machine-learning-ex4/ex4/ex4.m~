@@ -164,37 +164,39 @@ fprintf('\nTraining Neural Network... \n')
 
 %  After you have completed the assignment, change the MaxIter to a larger
 %  value to see how more training helps.
-iteration = 200;
+iteration = 10;
 options = optimset('MaxIter', iteration);
 
-%lambdas = logspace(log10(0.01), log10(3), 5);
-lambdas = [0.04]
-legends = {};
-for lambda = lambdas
-    % Create "short hand" for the cost function to be minimized
-    costFunction = @(p) nnCostFunction(p, ...
-                                       input_layer_size, ...
-                                       hidden_layer_size, ...
-                                       num_labels, X, y, lambda);
+%  You should also try different values of lambda
+lambda = 3;
 
-    % Now, costFunction is a function that takes in only one argument (the
-    % neural network parameters)
-    [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
-    % Obtain Theta1 and Theta2 back from nn_params
-    Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
-                     hidden_layer_size, (input_layer_size + 1));
+% Create "short hand" for the cost function to be minimized
+costFunction = @(p) nnCostFunction(p, ...
+                                   input_layer_size, ...
+                                   hidden_layer_size, ...
+                                   num_labels, X, y, lambda);
 
-    Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
-                     num_labels, (hidden_layer_size + 1));
-    
-    plot(cost);
-    hold on;
-    legends = [legends {num2str(lambda)}];
-end
+% Now, costFunction is a function that takes in only one argument (the
+% neural network parameters)
+[nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
+
+% Obtain Theta1 and Theta2 back from nn_params
+Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
+                 hidden_layer_size, (input_layer_size + 1));
+
+Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
+                 num_labels, (hidden_layer_size + 1));
+
+plot(cost);
 xlabel('iterations');
 ylabel('Cost');
+lamdas = logspace(log10(0.1), log10(10), 10);
+hold on;
+for i = 1:9
+    plot(1:i:10);
+end
 
-legend(legends);
+legend({'1','1']);
 
              
 fprintf('Program paused. Press enter to continue.\n');

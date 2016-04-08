@@ -1,4 +1,4 @@
-Algorithms implemented:
+###Algorithms implemented:
 
 Gradient Descent
 
@@ -12,7 +12,7 @@ Neural network back propagation
 
 
 
-Algorithms to Implement:
+###Algorithms to Implement:
 
 SVM
 
@@ -20,5 +20,5 @@ kernel
 
 
 
-Langauges Used:
+###Langauges Used:
 MATLAB

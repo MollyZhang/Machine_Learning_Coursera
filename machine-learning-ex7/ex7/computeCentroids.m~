@@ -27,10 +27,10 @@ centroids = zeros(K, n);
 %
 
 for k=1:K
-    for feature=1:n 
-        centroids(k, feature) = mean(X(idx == k, feature));
-    end
 end
+
+
+
 
 
 

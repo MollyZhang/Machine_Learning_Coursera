@@ -48,7 +48,14 @@ x = zeros(n, 1);
 %
 %
 
-
+vocab = getVocabList();
+for i=1:n
+    if ismember(i, word_indices)
+        x(i) = 1;
+    else
+        x(i) = 0;
+    end
+end
 
 
 

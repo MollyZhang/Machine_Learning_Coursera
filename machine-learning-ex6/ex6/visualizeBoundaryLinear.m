@@ -4,6 +4,8 @@ function visualizeBoundaryLinear(X, y, model)
 %   VISUALIZEBOUNDARYLINEAR(X, y, model) plots a linear decision boundary 
 %   learned by the SVM and overlays the data on it
 
+disp(model);
+
 w = model.w;
 b = model.b;
 xp = linspace(min(X(:,1)), max(X(:,1)), 100);

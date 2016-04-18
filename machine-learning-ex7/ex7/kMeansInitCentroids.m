@@ -13,10 +13,8 @@ centroids = zeros(K, size(X, 2));
 %               the dataset X
 %
 
-
-
-
-
+Xshuffled = X(randperm(size(X, 1)), :);
+centroids = Xshuffled(1:K, :);
 
 
 

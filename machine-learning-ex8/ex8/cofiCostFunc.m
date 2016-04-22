@@ -46,11 +46,13 @@ J = sum(sum(((X * Theta' - Y).^2) .*R ))/2 + ...
     sum(sum(X.^2)) * lambda/2;
 
 for i = 1:num_movies
-    X_grad(i, :) = ((X(i, :) * Theta' - Y(i, :)) .* R(i, :)) * Theta;
+    X_grad(i, :) = ((X(i, :) * Theta' - Y(i, :)) .* R(i, :)) * Theta + ...
+        lambda * X(i, :);
 end
 
 for j = 1:num_users
-    Theta_grad(j, :) = ((X * Theta(j, :)' - Y(:, j)) .* R(:, j))' * X;
+    Theta_grad(j, :) = ((X * Theta(j, :)' - Y(:, j)) .* R(:, j))' * X + ...
+        lambda * Theta(j, :);
 end
 
 

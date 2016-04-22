@@ -43,11 +43,13 @@ Theta_grad = zeros(size(Theta));
 
 J = sum(sum(((X * Theta' - Y).^2) .*R ))/2;
 
+for i = 1:num_movies
+    X_grad(i, :) = ((X(i, :) * Theta' - Y(i, :)) .* R(i, :)) * Theta;
+end
 
-
-
-
-
+for j = 1:num_users
+    Theta_grad(j, :) = ((X * Theta(j, :)' - Y(:, j)) .* R(:, j))' * X;
+end
 
 
 % =============================================================

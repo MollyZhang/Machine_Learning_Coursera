@@ -42,16 +42,6 @@ for epsilon = min(pval):stepsize:max(pval)
     precision = TP/(TP + FP);
     recall = TP/(TP + FN);
     F1 = 2*precision*recall/(precision + recall);
-    if epsilon < 0.001
-        disp(epsilon);
-        disp(TP);
-        disp(FP);
-        disp(FN);
-        disp(precision);
-        disp(recall);
-        disp(F1);
-    end
-    
     % =============================================================
     if F1 > bestF1
        bestF1 = F1;

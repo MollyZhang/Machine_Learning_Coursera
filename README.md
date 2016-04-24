@@ -10,13 +10,15 @@ Neural network forward propagation
 
 Neural network back propagation
 
+SVM with Gaussian kernel
 
+Collaborative filtering algorithm
 
-###Algorithms to Implement:
+Principle Component Analysis
 
-SVM
+K-mean Clustering
 
-kernel
+Abnormalty detection with Multivariant Gaussian distribution
 
 
 
